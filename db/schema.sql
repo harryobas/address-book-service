@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS address_books (
     id SERIAL PRIMARY KEY,
-    address_book_name VARCHAR(255) NOT NULL
+    address_book_name VARCHAR(255) UNIQUE NOT NULL
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
