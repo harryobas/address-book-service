@@ -1,6 +1,6 @@
-use thiserror::Error;
 use sqlx::Error as SqlxError;
 use std::num::ParseIntError;
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {

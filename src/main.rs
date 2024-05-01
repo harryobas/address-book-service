@@ -1,5 +1,5 @@
-mod types;
 mod repositories;
+mod types;
 
 use axum::{routing::get, Router};
 
