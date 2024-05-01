@@ -88,17 +88,17 @@ impl IAddressBookRepository for AddressBookRepository {
                 let contact = Contact {
                     id: contact_id,
                     name: contact_name,
-                    address: address,
-                    phone_number: phone_number,
-                    email: email,
+                    address,
+                    phone_number,
+                    email,
                     address_book_id: address_book_id.clone(),
                 };
                 contacts.push(contact);
 
                 AddressBook {
                     id: address_book_id,
-                    address_book_name: address_book_name,
-                    contacts: contacts,
+                    address_book_name,
+                    contacts,
                 }
             })
             .fetch_all(&self.pool)
@@ -138,8 +138,8 @@ impl IAddressBookRepository for AddressBookRepository {
                 });
                 AddressBook {
                     id: address_book_id,
-                    address_book_name: address_book_name,
-                    contacts: contacts,
+                    address_book_name,
+                    contacts,
                 }
             })
             .fetch_optional(&self.pool)
@@ -202,8 +202,8 @@ impl IAddressBookRepository for AddressBookRepository {
 
                 AddressBook {
                     id: address_book_id,
-                    address_book_name: address_book_name,
-                    contacts: contacts,
+                    address_book_name,
+                    contacts,
                 }
             })
             .fetch_optional(&self.pool)

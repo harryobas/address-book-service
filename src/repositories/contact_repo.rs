@@ -126,8 +126,8 @@ impl IContactRepository for ContactRepository {
 
     async fn get_contact_by_id(
         &self,
-        id: i32,
-        address_book_id: i32,
+        _id: i32,
+        _address_book_id: i32,
     ) -> Result<Option<Contact>, handle_errors::Error> {
         let q = "SELECT * FROM contacts
                              WHERE id = $1 AND address_book_id = $2";
