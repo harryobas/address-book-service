@@ -10,9 +10,11 @@ axum = { version = "0.7.4", features = ["macros"] }
 serde = { version = "1.0.199", features = ["derive"] }
 shuttle-axum = "0.44.0"
 shuttle-runtime = "0.44.0"
+shuttle-shared-db = { version = "0.44.0", features = ["postgres", "sqlx"] }
 sqlx = { version = "0.7.4", features = ["postgres", "runtime-tokio-rustls"] }
 tokio = { version = "1.28.2", features = ["full"] }
 handle-errors = { version = "0.1.0", path = "./handle-errors" }
+serde_json = "1.0.116"
 
 
 [profile.release]

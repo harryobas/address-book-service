@@ -1,2 +1,2 @@
-mod address_book_repo;
-mod contact_repo;
+pub mod address_book_repo;
+pub mod contact_repo;

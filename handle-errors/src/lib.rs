@@ -12,4 +12,6 @@ pub enum Error {
     AddressBookNotFound,
     #[error("Missing parameters")]
     MissingParameters,
+    #[error("Ivalid loading strategy")]
+    InvalidLoadStrategy,
 }
