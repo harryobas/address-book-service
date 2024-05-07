@@ -31,22 +31,7 @@ pub trait IAddressBookRepository {
         address_book: &str,
     ) -> Result<AddressBook, handle_errors::Error>;
 
-    async fn get_all_address_books_lazy(
-        &self,
-        limit: Option<i32>,
-        offset: i32,
-    ) -> Result<Vec<AddressBook>, handle_errors::Error>;
-
-    async fn get_address_book_by_id_lazy(
-        &self,
-        id: i32,
-    ) -> Result<AddressBook, handle_errors::Error>;
-
-    async fn find_address_book_by_name_lazy(
-        &self,
-        name: &str,
-    ) -> Result<AddressBook, handle_errors::Error>;
-}
+   }
 
 pub struct AddressBookRepository {
     pool: sqlx::PgPool,
@@ -248,72 +233,5 @@ impl IAddressBookRepository for AddressBookRepository {
             Err(e) => Err(handle_errors::Error::DatabaseQueryError(e)),
         }
     }
-    async fn get_address_book_by_id_lazy(
-        &self,
-        id: i32,
-    ) -> Result<AddressBook, handle_errors::Error> {
-        let q = "SELECT * FROM address_books WHERE id = $1";
-        match sqlx::query(q)
-            .bind(id)
-            .map(|row: PgRow| AddressBook {
-                id: AddressBookId(row.get("id")),
-                address_book_name: row.get("address_book_name"),
-                contacts: vec![],
-            })
-            .fetch_optional(&self.pool)
-            .await
-        {
-            Ok(address_book) => match address_book {
-                Some(address_book) => Ok(address_book),
-                None => Err(handle_errors::Error::AddressBookNotFound),
-            },
-            Err(e) => Err(handle_errors::Error::DatabaseQueryError(e)),
-        }
-    }
-
-    async fn find_address_book_by_name_lazy(
-        &self,
-        name: &str,
-    ) -> Result<AddressBook, handle_errors::Error> {
-        let q = "SELECT * FROM address_books WHERE address_book_name = $1";
-        match sqlx::query(q)
-            .bind(name)
-            .map(|row: PgRow| AddressBook {
-                id: AddressBookId(row.get("id")),
-                address_book_name: row.get("address_book_name"),
-                contacts: vec![],
-            })
-            .fetch_optional(&self.pool)
-            .await
-        {
-            Ok(address_book) => match address_book {
-                Some(address_book) => Ok(address_book),
-                None => Err(handle_errors::Error::AddressBookNotFound),
-            },
-
-            Err(e) => Err(handle_errors::Error::DatabaseQueryError(e)),
-        }
-    }
-
-    async fn get_all_address_books_lazy(
-        &self,
-        limit: Option<i32>,
-        offset: i32,
-    ) -> Result<Vec<AddressBook>, handle_errors::Error> {
-        let q = "SELECT * FROM address_books LIMIT $1 OFFSET $2";
-        match sqlx::query(q)
-            .bind(limit)
-            .bind(offset)
-            .map(|row: PgRow| AddressBook {
-                id: AddressBookId(row.get("id")),
-                address_book_name: row.get("address_book_name"),
-                contacts: vec![],
-            })
-            .fetch_all(&self.pool)
-            .await
-        {
-            Ok(address_books) => Ok(address_books),
-            Err(e) => Err(handle_errors::Error::DatabaseQueryError(e)),
-        }
-    }
 }
+
