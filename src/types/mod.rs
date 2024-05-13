@@ -6,24 +6,20 @@ use axum::{
     Json,
 };
 
-
 use axum::http::StatusCode;
 use serde_json::json;
 
 use self::address_book::AddressBook;
 
 #[derive(serde::Deserialize)]
-pub enum LoadingStrategy {
-    #[serde(rename = "lazy")]
-    Lazy,
-    #[serde(rename = "eager")]
-    Eager,
+pub struct NameQueryParam {
+    pub name: String,
 }
 
 #[derive(serde::Deserialize)]
-pub struct QueryParams {
-    pub limit: i32,
-    pub offset: i32,
+pub struct Pagination {
+    pub limit: Option<i32>,
+    pub offset: Option<i32>,
 }
 
 #[derive(Debug, Clone)]
@@ -40,9 +36,7 @@ pub enum ApiResponse {
 impl IntoResponse for ApiResponse {
     fn into_response(self) -> Response {
         match self {
-            ApiResponse::JsonDataAddressBook(data) => {
-                (StatusCode::OK, Json(data)).into_response()
-            }
+            ApiResponse::JsonDataAddressBook(data) => (StatusCode::OK, Json(data)).into_response(),
             ApiResponse::JsonDataAddressBookCollection(data) => {
                 (StatusCode::OK, Json(data)).into_response()
             }
@@ -55,7 +49,6 @@ pub enum ApiError {
     DataBaseError,
     JsonDeserilize,
     AddressBookNotFound,
-    
 }
 
 impl IntoResponse for ApiError {
@@ -71,6 +64,5 @@ impl IntoResponse for ApiError {
 
         }));
         (status, body).into_response()
-
     }
 }

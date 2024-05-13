@@ -4,7 +4,7 @@ mod services;
 mod types;
 
 use axum::{
-    routing::{get, post, put, delete},
+    routing::{delete, get, post, put},
     Router,
 };
 use routes::address_book::*;

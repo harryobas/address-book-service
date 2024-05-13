@@ -5,7 +5,11 @@ use async_trait::async_trait;
 use sqlx::postgres::PgRow;
 use sqlx::Row;
 
+#[cfg(test)]
+use mockall::{predicate::*, *};
+
 #[async_trait]
+#[cfg_attr(test, automock)]
 pub trait IAddressBookRepository {
     async fn get_all_address_books(
         &self,
@@ -14,13 +18,15 @@ pub trait IAddressBookRepository {
     ) -> Result<Vec<AddressBook>, handle_errors::Error>;
 
     async fn get_address_book_by_id(&self, id: i32) -> Result<AddressBook, handle_errors::Error>;
+
     async fn create_address_book(
         &self,
-        address_book_name: &str,
+        address_book_name: String,
     ) -> Result<AddressBook, handle_errors::Error>;
+
     async fn find_address_book_by_name(
         &self,
-        name: &str,
+        name: String,
     ) -> Result<AddressBook, handle_errors::Error>;
 
     async fn delete_address_book(&self, id: i32) -> Result<(), handle_errors::Error>;
@@ -30,8 +36,7 @@ pub trait IAddressBookRepository {
         id: i32,
         address_book: &str,
     ) -> Result<AddressBook, handle_errors::Error>;
-
-   }
+}
 
 pub struct AddressBookRepository {
     pool: sqlx::PgPool,
@@ -139,7 +144,7 @@ impl IAddressBookRepository for AddressBookRepository {
 
     async fn create_address_book(
         &self,
-        address_book_name: &str,
+        address_book_name: String,
     ) -> Result<AddressBook, handle_errors::Error> {
         let q = "INSERT INTO address_books (address_book_name)
                        VALUES ($1) RETURNING id, address_book_name";
@@ -160,7 +165,7 @@ impl IAddressBookRepository for AddressBookRepository {
 
     async fn find_address_book_by_name(
         &self,
-        name: &str,
+        name: String,
     ) -> Result<AddressBook, handle_errors::Error> {
         let q = "SELECT a.id AS address_book_id, a.address_book_name, c.id AS contact_id, c.name, c.address, c.phone_number, c.email
                         FROM address_books AS a
@@ -234,4 +239,3 @@ impl IAddressBookRepository for AddressBookRepository {
         }
     }
 }
-

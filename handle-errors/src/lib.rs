@@ -1,6 +1,6 @@
+use axum::extract::rejection::JsonRejection;
 use sqlx::Error as SqlxError;
 use thiserror::Error;
-use axum::extract::rejection::JsonRejection as JsonRejection;
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -11,5 +11,5 @@ pub enum Error {
     //#[error("Missing parameters")]
     //MissingParameters,
     #[error("Ivalid json string")]
-    JsonDeserilizationError(#[from] JsonRejection)
+    JsonDeserilizationError(#[from] JsonRejection),
 }
