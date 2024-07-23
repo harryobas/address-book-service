@@ -4,7 +4,7 @@ RUN apt update && apt upgrade -y
 
 RUN apt install -y gcc curl wget git vim zip sqlite3 libdigest-sha-perl zsh build-essential make
 
-ARG USER=skerkour
+ARG USER=harryobas
 
 RUN adduser \
    --system \
